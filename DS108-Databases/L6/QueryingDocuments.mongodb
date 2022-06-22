@@ -1,0 +1,723 @@
+db.createCollection("appusers");
+//Creates the document.
+
+db.appusers.insertOne({_id:1,lastName:"Pumpernickel", firstName:"Georgina", middleName:"Sasquatch", age:27, gender:"f"})
+//Inserts a document with id #1.
+
+db.appusers.insertOne({_id:2,lastName:"Wilson", firstName:"Coderboy", age:18, favoriteColor:"blue"})
+//Inserts a document with id #2.
+
+db.appusers.find({})
+//This lets us see all documents in the database.
+
+db.appusers.insertMany([{lastName: "Anstruther", firstName: "Jimmy", age: 21},
+ {lastName: "Stevens", firstName: "Amelia", age: 28},
+ {lastName: "Hopkins", firstName: "Fred", age: 35, favoriteColor: "Green"}])
+
+ db.appusers.find({})
+
+ db.movies.insertMany([{title: "The Shawshank Redemption", director: "Frank Darabont", yearReleased: 1994},
+  {title: "The Dark Knight", director: "Christopher Nolan", yearReleased: 2008}, 
+  {title: "It's a Wonderful Life", director: "Frank Capra", yearReleased: 1946}])
+
+  // Create three more users of your choosing, using the insertOne() query, and add them to the appusers collection.
+// Include at least the firstName, lastName, and age fields. Feel free to also include any other fields you think would be useful data for an app user.
+
+db.appusers.insertOne({_id:3,lastName:"Bartlette", firstName:"Kai", middleName:"Afi", age:42, gender:"f", password: "12345", localtime: "1540"})
+//Inserts a document for a user with id #3.
+
+db.appusers.insertOne({_id:4,lastName:"Wilkins", firstName:"Marie", middleName:"Tsudae", age:19, gender:"f", password: "12345", localtime: "1239"})
+db.appusers.insertOne({_id:5,lastName:"Johnson", firstName:"Brandon", middleName:"Meredith", age:51, gender:"m", password: "12345", localtime: "1541"})
+
+db.appusers.find({})
+
+// Create a new collection within your database through Atlas.
+// This new collection should be named cars.
+// Insert five cars into this collection using the insertMany() query.
+// Include the following fields: make, model, color, year, fourDoor, and fourWheelDrive.
+// The last two fields, fourDoor and fourWheelDrive, should be of type Boolean (i.e. true or false).
+// Once that is done, run a find() query to see your newly created documents.
+// Lastly, return to Atlas and view your collection and documents there.
+
+db.cars.insertMany([{make: "Kia", model: "Sportage", color: "Silver", year: "2022", fourDoor: "true", fourWheelDrive: "false"},
+{make: "Chevrolet", model: "Impala", color: "Black", year: "2021", fourDoor: "true", fourWheelDrive: "false"},
+{make: "Ford", model: "Focus", color: "Red", year: "2005", fourDoor: "true", fourWheelDrive: "false"},
+{make: "Honda", model: "Civic", color: "Blue", year: "2007", fourDoor: "true", fourWheelDrive: "false"},
+{make: "Nissan", model: "Maxima", color: "White", year: "1996", fourDoor: "true", fourWheelDrive: "false"}
+])
+
+db.cars.find({})
+
+//--------------------
+
+db.appusers.find({ _id : { $eq : 1} })
+//Find me a document in the appusers collection that has a user id of 1.
+
+db.appusers.find({ _id : { $ne : 1} })
+//Find me a document in the appusers collection that has a user id  that is not 1.
+
+db.appusers.find({ _id : { $gt : 1} })
+//Find me a document in the appusers collection that has a user id greater than 1.
+
+db.appusers.find({ _id : { $gte : 2} })
+//Find me a document in the appusers collection that has a user id that is greater than or equal to 2.
+
+db.appusers.find({ _id : { $lt : 2} })
+//Find me a document in the appsusers collection that has a user id that is less than 2.
+
+db.appusers.find({ _id : { $lte : 2} })
+//Find me a document in that appusers collection that has a user id that is less than or equal to 2.
+
+
+db.inventory.insertMany([
+{ item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A", price: 16.49, sale: true },
+{ item: "spiral notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A", price: 4.79, sale: false },
+{ item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D", price: 6.99, sale: true },
+{ item: "day planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D", price: 25.29, sale: true },
+{ item: "calendar", size: { h: 21.75, w: 17, uom: "in" }, status: "B", price: 5.99, sale: false },
+{ item: "scissor", qty: 15, size: { h: 8, w: 4.25, uom: "in" }, status: "B", price: 11.59, sale: true },
+{ item: "tape dispenser", qty: 5, size: { h: 3, w: 7, uom: "in" }, status: "A", price: 3.09, sale: true }
+]);
+
+db.inventory.find( { qty: { $in: [ 5, 15 ] } } )
+//Find me a document in the inventory collection that has a qty field with a value of either 5 or 15.
+
+db.inventory.find( { qty: { $nin: [ 5, 15 ] } } )
+//Find me a a document in the inventory collection has a qty field with a value not equal to 5 or 15.
+
+db.inventory.find( { $and: [ { price: { $ne: 6.99 } }, { price: { $exists: true } } ] } )
+//Find me a document in the inventory collection that has a price, AND with a price that is not equal to 6.99.
+
+db.inventory.find( { $or: [ { qty: { $lt: 20 } }, { price: 16.49 } ] } )
+//The above query will locate all documents in the inventory collection where the qty field value is less than 20, or the price field value equals 16.49.
+
+db.inventory.find( {
+$and : [
+{ $or : [ { price : { $eq : 4.79 } }, { price : { $eq : 3.09 } } ] },
+{ $or : [ { sale : true }, { qty : { $lt : 20 } } ] }
+]
+} )
+//The query above will return those records with
+//price equal to either 4.79 OR 3.09
+//AND
+//sale is true OR the qty is less than 20.
+
+db.inventory.find( { price: { $not: { $gt: 4.80 } } } )
+//The above query will locate all documents in the inventory collection with 
+//a price field and where the price is not greater than 4.80. 
+//So, any item with a price that is 4.80 or less will be returned.
+
+db.inventory.find( { $nor: [ { price: { $gte : 5.99 } }, { sale: { $eq : true } } ] } )
+//The above query will return all documents that:
+//contain the price field whose value is not greater than or equal to 5.99 and contain the sale field whose value is NOT equal to true
+//OR
+//contains the price field whose value is not greater than or equal to 5.99 but do not contain the sale field
+//OR
+//do not contain the price field but contains the sale field with a value that is not equal to true
+//OR
+//do not contain the price field and do not contain the sale field.
+
+db.inventory.find( { qty: { $exists: true, $nin: [ 5, 15 ] } } )
+// The above query finds all documents in the inventory collection where the qty field exists, and its value does not equal 5 or 15.
+
+
+//$all
+{ tags: { $all: [ "ssl" , "security" ] } }
+This query matches all documents where the value of a field is an array that contains all the specified elements.
+The above query is finding all elements in the tags field that is an array. You have seen something similar to this with $and. The above query is equivalent to:
+{ $and: [ { tags: "ssl" }, { tags: "security" } ] }
+
+//$elemMatch
+//Matches documents that contain an array field with at least one element that matches all the specified query criteria.
+//Below, if you have an array of results, you can check the values within that array to return a field with the results that are greater than or equal to 80 and less than 85.
+{ results: { $elemMatch: { $gte: 80, $lt: 85 } } }
+
+//$size
+//Selects documents that have an array with a specified size.
+db.collection.find( { field: { $size: 2 } } );
+//Above will find a specific field within a collection that has a size of 2. That means there are two values within the array.
+
+//So, if you wanted to include the firstName only in your query result set and nothing else, it would look like this:
+
+db.appusers.find( { _id : 25}, { firstName: 1 })
+//And if you wanted to find only the firstName and lastName fields for all documents and nothing else, you can run the code below:
+
+db.appusers.find({}, {firstName : 1, lastName : 1})
+//As you can see, the first and last names of all your documents are listed, paired with their ObjectId numbers. If you don't want to see the _id but want to see all other fields, you can define that with a projection:
+
+db.appusers.find({}, { _id : 0})
+//And there you have it: All fields except for the _id when documents contain those fields.
+
+//----------
+
+//Project Part 1
+
+db.movies.insertMany([
+        {_id: 1, title: "Wonder Woman", director: "Patty Jenkins", yearReleased: 2017, leadActors: ["Gal Gadot", "Chris Pine", "Robin Wright"], lengthInMin: 141, genre: ["Action", "Adventure", "Fantasy"], MPAA: "PG-13" },
+        {_id: 2, title: "Cloud Atlas", director: "Tom Tykwer", yearReleased: 2012, leadActors: ["Tom Hanks", "Halle Berry", "Hugh Grant", "Jim Broadbent", "Jim Sturgess", "Hugo Weaving"], lengthInMin: 172, genre: ["Action", "Drama", "Mystery"], MPAA: "R" },
+        {_id: 3, title: "Pan's Labyrinth", director: "Guillermo del Torro", yearReleased: 2006, leadActors: ["Ivana Baquero", "Ariadna Gil", "Sergi Lopez"], lengthInMin: 118, genre: ["Drama", "Fantasy", "War", "Foreign"], MPAA: "R" },
+        {_id: 4, title: "Gone With the Wind", director: "Victor Fleming", yearReleased: 1939, leadActors: ["Clark Gable", "Vivien Leigh", "Thomas Mitchell", "Olivia de Havilland", "Leslie Howard"], lengthInMin: 238, genre: ["Drama", "History", "Romance"], MPAA: "G" },
+        {_id: 5, title: "Spaceballs", director: "Mel Brooks", yearReleased: 1987, leadActors: ["Mel Brooks", "John Candy", "Rick Moranis", "Bill Pullman", "Daphne Zuniga"], lengthInMin: 96, genre: ["Adventure", "Comedy", "Sci-fi"], MPAA: "PG" },
+        {_id: 6, title: "Silence of the Lambs", director: "Jonathan Demme", yearReleased: 1991, leadActors: ["Jodie Foster", "Anthony Hopkins", "Anthony Heald"], lengthInMin: 118, genre: ["Crime", "Drama", "Thriller"], MPAA: "R" },
+        {_id: 7, title: "American History X", director: "Tony Kaye", yearReleased: 1998, leadActors: ["Edward Norton", "Edward Furlong", "Beverly D'Angelo", "Ethan Suplee"], lengthInMin: 119, genre: ["Crime", "Drama"], MPAA: "R" },
+        {_id: 8, title: "Psycho", director: "Alfred Hitchcock", yearReleased: 1960, leadActors: ["Anthony Perkins", "Vera Miles", "John Gavin", "Janet Leigh"], lengthInMin: 109, genre: ["Horror", "Mystery", "Thriller"], MPAA: "R" },
+        {_id: 9, title: "The Pianist", director: "Roman Polanski", yearReleased: 2002, leadActors: ["Adrien Brody", "Emilia Fox", "Michal Zebrowski", "Ed Stoppard"], lengthInMin: 150, genre: ["Biography", "Drama", "Music"], MPAA: "R" },
+        {_id: 10, title: "Gladiator", director: "Ridley Scott", yearReleased: 2000, leadActors: ["Russell Crowe", "Joaquin Phoenix", "Connie Nielsen", "Oliver Reed"], lengthInMin: 155, genre: ["Action", "Adventure", "Drama"], MPAA: "R" },
+])
+
+db.movies.find({lengthInMin : { $gt : 120 }})
+
+db.movies.find({leadActors : { $ne : "Tom Hanks"}})
+
+db.movies.find({director : "Mel Brooks"})
+
+db.movies.find({genre : { $ne : "Mystery"}})
+
+db.movies.find( { $and: [ { lengthInMin: { $gt: 90 } }, { lengthInMin: { $lt: 120 } } ] } )
+//Find me a document in the movies collection that has a length greater than 90 min but less than 120.
+
+db.movies.find( { genre: { $in: ["Action", "Adventure" ] } }, {title : 1})
+
+//Project Part 2
+//The company you work for is having a movie night for all employees, and they are trying to find the perfect movie for movie night. 
+//The problem is, so many people have different opinions, and they want to make everyone happy. 
+//Sally has very poor eTrueight so cannot watch any foreign films but likes comedies and dramas. 
+//Robert hates Jodie Foster and refuses to watch any movies with her in it, but likes comedies and horror films. 
+//Stewart has somewhere to be after movie night, so he can't watch a movie longer than 2 hours; he prefers thrillers and comedies.
+//After running your query(ies), what movie is going to be played at movie night?
+
+
+db.movies.find( {$and: [{ genre: { $in: ["Comedy" ] } }, { lengthInMin: { $lt: 120 } }, { leadActors : { $ne : "Jodie Foster"} }]} )
+
+//Spaceballs is the movie!
+
+//Updating, Indexing, Deleting
+
+//Within your inventory collection, run queries to accomplish the following:
+
+//Update the item of journal to have a height of 16.
+//Update all items with a status of D to have a quantity of 50.
+//Update the item paper to include a field rating that has the value of 4 stars and change its status to A.
+//Update all items to change the h and w fields to be height and width.
+//Update the item spiral notebook so that the height and width is incremented by 2.
+//Update the items paper and day planner to multiply the height by 3.
+
+
+
+
+//db.inventory.updateOne({item: "journal"}, {$set: {h: 16}})
+//db.inventory.updateOne({ item: 'journal' }, { $set: { h: 16 } });
+db.inventory.updateOne({item: "journal"}, {$set: {"size.h": 16}})
+
+db.inventory.find({})
+
+db.inventory.updateMany({"status" : "D"}, {$set : {"qty" : 50}} )
+db.inventory.updateOne({item: "paper"}, {$set : {"field" : 4}}, {$set : {"status" : "A"}}, {upsert : true})
+db.inventory.updateOne({item: "paper"}, {$set : {"status" : "A"}})
+db.inventory.updateMany({}, { $rename: { "h" : "height" } })
+
+db.cars.insertMany([
+  {
+    make: 'Hyundai',
+    model: 'Santa Fe',
+    price: 8000,
+    year: 2003,
+    used: true,
+    color: 'Black'
+  },
+  {
+    make: 'BMW',
+    model: 'ALPINA B6 Gran Coupe',
+    price: 124300,
+    year: 2017,
+    used: false,
+    color: 'Mediterranean Blue Metallic'
+  },
+  {
+    make: 'Subaru',
+    model: 'Crosstrek 2.0i Premium',
+    price: 22595,
+    year: 2014,
+    used: true,
+    color: 'Sunshine Orange'
+  },
+  {
+    make: 'Ford',
+    model: 'F-350 XL',
+    price: 33705,
+    year: 2017,
+    used: false,
+    color: 'Race Red'
+  },
+  {
+    make: 'Toyota',
+    model: 'Acura MDX',
+    price: 28800,
+    year: 2014,
+    used: true,
+    color: 'Graphite Luster Metallic'
+  },
+  {
+    make: 'Volkswagen',
+    model: 'Jetta 1.4T S',
+    price: 19495,
+    year: 2018,
+    used: false,
+    color: 'Silk Blue Metallic'
+  }
+]);
+
+db.cars.deleteMany({})
+
+db.cars.insertMany([
+  {
+    make: 'Hyundai',
+    model: 'Santa Fe',
+    price: 8000,
+    year: 2003,
+    used: true,
+    color: 'Black'
+  },
+  {
+    make: 'BMW',
+    model: 'ALPINA B6 Gran Coupe',
+    price: 124300,
+    year: 2017,
+    used: false,
+    color: 'Mediterranean Blue Metallic'
+  },
+  {
+    make: 'Subaru',
+    model: 'Crosstrek 2.0i Premium',
+    price: 22595,
+    year: 2014,
+    used: true,
+    color: 'Sunshine Orange'
+  },
+  {
+    make: 'Ford',
+    model: 'F-350 XL',
+    price: 33705,
+    year: 2017,
+    used: false,
+    color: 'Race Red'
+  },
+  {
+    make: 'Toyota',
+    model: 'Acura MDX',
+    price: 28800,
+    year: 2014,
+    used: true,
+    color: 'Graphite Luster Metallic'
+  },
+  {
+    make: 'Volkswagen',
+    model: 'Jetta 1.4T S',
+    price: 19495,
+    year: 2018,
+    used: false,
+    color: 'Silk Blue Metallic'
+  }
+]);
+
+db.cars.deleteMany({ used : true })
+db.cars.find({})
+
+
+db.cars.getIndexes();
+
+//Part 1
+//Follow the below steps:
+
+//Start off by deleting the entire collection cars.
+//Take a screenshot of the query as well as the list of your collections in Atlas to be sure this collection has been deleted.
+//Next, run the following query to recreate the cars collection.
+//The following includes more cars than before.
+
+db.cars.deleteMany({})
+
+db.cars.insertMany([
+  {
+    make: "Hyundai",
+    model: "Santa Fe",
+    price: 8000,
+    year: 2003,
+    used: true,
+    color: "Black"
+  },
+  {
+    make: "BMW",
+    model: "ALPINA B6 Gran Coupe",
+    price: 124300,
+    year: 2017,
+    used: false,
+    color: "Mediterranean Blue Metallic"
+  },
+  {
+    make: "Subaru",
+    model: "Crosstrek 2.0i Premium",
+    price: 22595,
+    year: 2014,
+    used: true,
+    color: "Sunshine Orange"
+  },
+  {
+    make: "Ford",
+    model: "F-350 XL",
+    price: 33705,
+    year: 2017,
+    used: false,
+    color: "Race Red"
+  },
+  {
+    make: "Toyota",
+    model: "Acura MDX",
+    price: 28800,
+    year: 2014,
+    used: true,
+    color: "Graphite Luster Metallic"
+  },
+  {
+    make: "BMW",
+    model: "5 Series 535i Sedan",
+    price: 18995,
+    year: 2013,
+    used: true,
+    color: "Space Gray Metallic"
+  },
+  {
+    make: "Ford",
+    model: "Escape",
+    price: 7480,
+    year: 2011,
+    used: true,
+    color: "Sterling Grey Metallic"
+  },
+  {
+    make: "Subaru",
+    model: "Impreza",
+    price: 18495,
+    year: 2018,
+    used: false,
+    color: "Crimson Red Pearl"
+  },
+  {
+    make: "Toyota",
+    model: "Yaris",
+    price: 15635,
+    year: 2018,
+    used: false,
+    color: "Super White"
+  },
+  {
+    make: "Honda",
+    model: "Civic LX",
+    price: 14999,
+    year: 2016,
+    used: true,
+    color: "Crystal Black Pearl"
+  },
+  {
+    make: "Volkswagen",
+    model: "Jetta 1.4T S",
+    price: 19495,
+    year: 2018,
+    used: false,
+    color: "Silk Blue Metallic"
+  }
+]);
+
+//Create an index on the price field.
+//Create an index on the non-used field for the cars collection.
+//Find and delete all documents with a year before 2012.
+//Be sure to do a find with your filtering criteria first to be sure you're about to delete the correct documents.
+//Delete the first document that is a BMW.
+//Drop the index created on the non-used cars created above.
+
+db.cars.createIndex({ price: 1 })
+
+db.cars.createIndex({ "used.false": 1 })
+
+db.cars.find( { year: { $lt: 2012 } } )
+
+db.cars.deleteMany({ year: { $lt : 2012 }})
+
+db.cars.deleteOne({ make: "BMW" })
+
+db.cars.dropIndexes();
+
+//You are currently working for a car dealership. 
+//They sell both used and new cars. 
+//The company would like to easily and efficiently search through their cars using the "make" of the car. 
+//Recently, they made the searching efficient using the price of the car, 
+//but that is no longer needed since they will now be using the make of the vehicles. 
+//Please reflect that in the database. Also, the company has decided to no longer sell Volkswagens 
+//and has already sold the last Volkswagen on the lot so they would like you to reflect that in the database as well.
+
+//I made the mistake above of dropping all indexes that were created so I need to add the price index back to drop it.
+
+db.cars.createIndex({ price: 1 })
+
+//Now I will drop it.
+//db.collectionName.dropIndex(<indexName>) OR,
+//db.collectionName.dropIndex( { <indexSpecificationDocument> } )
+
+db.cars.dropIndex("price_1")
+
+//MongoDB gave the index the name "price_1" I guess since I already used "price".
+
+db.cars.createIndex({ make: 1 })
+
+// This creates the index by make.
+
+db.cars.find ({ make: "Volkswagen"})
+
+//Finds the Volkswagen.
+
+db.cars.findOneAndDelete ({ make: "Volkswagen"})
+
+//Finds and deletes the Volkswagen.
+
+
+
+//Final Project
+Alison Davidson	04/05/75	874 W. Oak Place	Gary	Indiana	Customer Support	True	True
+
+
+db.employees.insertMany([
+        
+        {name: "Alison Davidson", 
+        birthday: "1975-05-04", 
+        address: "874 W. Oak Place", 
+        city: "Gary", 
+        state: "Indiana", 
+        position: { positionName: "Customer Support", remote: "True", fullTime: "True" }}, 
+        {name: "Henry Chapelton", 
+        birthday: "1980-29-09", 
+        address: "9324 E. Vista Way", 
+        city: "Tempe", 
+        state: "Arizona", 
+        position: { positionName: "Customer Support", remote: "False", fullTime: "True" }},
+        {name: "Alex Miller", 
+        birthday: "1983-22-11", 
+        address: "244 Price Road", 
+        city: "Mesa", 
+        state: "Arizona", 
+        position: { positionName: "Customer Support", remote: "False", fullTime: "False" }},
+        {name: "Carly Nielson", 
+        birthday: "1987-04-08", 
+        address: "678 W. Westward Road", 
+        city: "Phoenix", 
+        state: "Arizona", 
+        position: { positionName: "Office Manager", remote: "False", fullTime: "True" }},
+         {name: "Tom Talbot", 
+        birthday: "1989-30-12", 
+        address: "12 Oakland Way", 
+        city: "Chandler", 
+        state: "Arizona", 
+        position: { positionName: "Inventory Manager", remote: "False", fullTime: "True" }},
+         {name: "Mary Crawley", 
+        birthday: "1980-06-07", 
+        address: "1010 Granite Way", 
+        city: "Charlotte", 
+        state: "North Carolina", 
+        position: { positionName: "Human Resources", remote: "True", fullTime: "True" }},
+        {name: "Daisy Baxter", 
+        birthday: "1987-09-09", 
+        address: "990 E. 84th St.", 
+        city: "Tempe", 
+        state: "Arizona", 
+        position: { positionName: "CEO", remote: "False", fullTime: "True" }},
+        {name: "William Coyle", 
+        birthday: "1991-11-10", 
+        address: "944 W. 16th St.", 
+        city: "Phoenix", 
+        state: "Arizona", 
+        position: { positionName: "Intern", remote: "False", fullTime: "False" }},
+        {name: "Edith Bates", 
+        birthday: "1990-28-07", 
+        address: "7 E. 20th Pl.", 
+        city: "Chandler", 
+        state: "Arizona", 
+        position: { positionName: "Customer Support", remote: "False", fullTime: "True" }},
+        {name: "Gwen Harding", 
+        birthday: "1986-11-10", 
+        address: "234 W. 48th St.", 
+        city: "Phoenix", 
+        state: "Arizona", 
+        position: { positionName: "Office Assistant", remote: "False", fullTime: "True" }}
+        
+// I tested the date data type by inserting one for example.
+        ])
+        db.employees1.insertOne(
+        
+        {lastName: "Davidson", 
+        firstName: "Alison", 
+        birthday: "1975-05-04", 
+        address: "874 W. Oak Place", 
+        city: "Gary", 
+        state: "Indiana", 
+        position: { positionName: "Customer Support", remote: "True", fullTime: "True" }});
+
+//Now I'm going to drop the entire collection because I realized that the date field was filled
+//with the current date.
+
+db.employees.drop();
+db.employees1.drop();
+
+// I also dropped the test collection called employees1 to clean things up.
+
+//It's been about a month since you have inserted all employees into the database. 
+//There have been a couple of changes to the company. 
+//The CEO decided that he no longer wants remote employees, so they have transferred the remote employees and 
+//they are now living in Arizona. 
+//Alison Davidson now lives at 777 E. 1st St. # 120 Tempe, AZ and
+//Mary Crawley now lives at 8322 W. Vista Pl. Scottsdale, AZ. 
+//Since all employees now all live in Arizona, there is no need to have a field named "state" within this collection, 
+//so please remove it. Lastly, they would like very efficient searching using the "position" field 
+//(remember that field includes a document with three other fields).
+
+db.employees.updateMany(
+        {"position.remote" : "True"}, 
+        { $set : {"position.remote" : "False"}});
+
+db.employees.updateOne({name : "Alison Davidson"}, { $set : { address : "777 E. 1st St. # 120"}});
+db.employees.updateOne({name : "Alison Davidson"}, { $set :  {city : "Tempe"}});
+db.employees.updateOne({name : "Alison Davidson"}, { $set :   {state : "Arizona"}});      
+
+db.employees.updateOne({name : "Mary Crawley"}, { $set : { address : "8322 W. Vista Pl."}});
+db.employees.updateOne({name : "Mary Crawley"}, { $set :  {city : "Scottsdale"}});
+db.employees.updateOne({name : "Mary Crawley"}, { $set :   {state : "Arizona"}});      
+
+db.employees.updateMany({ $unset: { state: "" } });
+
+db.employees.updateMany(
+   { state: "Arizona" },
+   { $unset: { state: ""} }
+)
+
+//I first ran this above command as updateOne, and it was successful.
+//That's why the modified count only says 9 to the right.
+
+// This is the last step of Part 1.
+
+db.employees.createIndex( { position: 1 } )
+
+//Part 2
+//Notes:
+
+//The artist, album, and releaseYear fields should be an embedded document named details.
+//Be sure that the songId and releaseYear fields have a type of number.
+//Next, your company has run into some things they would like to be changed within the database:
+
+//The title field needs to be renamed to songTitle, so it is clearer to the developers working with the data.
+//They would like to have the artist field to be outside the details document but the album and releaseYear should stay within that document.
+
+db.songs.insertMany([
+        {songId: 1,
+        title: "Girls Just Want To Have Fun",
+        details: {artist: "Cyndi Lauper",
+                album: "She's So Unusual",
+                releaseYear: 1983}},
+         {songId: 2,
+        title: "Hips Don't Lie",
+        details: {artist: "Shakira feat. Wyclef Jean",
+                album: "Oral Fixation Vol. 2",
+                releaseYear: 2006}},
+         {songId: 3,
+        title: "Poker Face",
+        details: {artist: "Lady Gaga",
+                album: "The Fame",
+                releaseYear: 2008}},
+         {songId: 4,
+        title: "Wannabe",
+        details: {artist: "Spice Girls",
+                album: "Spice",
+                releaseYear: 1996}},
+         {songId: 5,
+        title: "California Gurls",
+        details: {artist: "Katy Perry feat. Snoop Dogg",
+                album: "Teenage Dream",
+                releaseYear: 2010}},
+         {songId: 6,
+        title: "Bye, Bye, Bye",
+        details: {artist: "NSYNC",
+                album: "No Strings Attached",
+                releaseYear: 2000}},
+         {songId: 7,
+        title: "I Will Always Love You",
+        details: {artist: "Whitney Houston",
+                album: "I Will Always Love You: The Best of Whitney Houston",
+                releaseYear: 2012}},
+         {songId: 8,
+        title: "Baby One More Time",
+        details: {artist: "Britney Spears",
+                album: "Baby One More Time",
+                releaseYear: "1999"}},
+         {songId: 9,
+        title: "Vogue",
+        details: {artist: "Madonna",
+                album: "I'm Breathless",
+                releaseYear: 1990}},
+         {songId: 10,
+        title: "Rolling In The Deep",
+        details: {artist: "Adele",
+                album: "21",
+                releaseYear: 2011}},
+         {songId: 11,
+        title: "1234",
+        details: {artist: "Feist",
+                album: "The Reminder",
+                releaseYear: 2007}},
+         {songId: 12,
+        title: "Elastic Heart",
+        details: {artist: "Sia",
+                album: "The Hunger Games: Catching Fire Soundtrack",
+                releaseYear: 2015}},
+        {songId: 13,
+        title: "Oops! I Did It Again",
+        details: {artist: "Britney Spears",
+                album: "Oops! I Did It Again",
+                releaseYear: 2000}},
+        {songId: 14,
+        title: "Bad Romance",
+        details: {artist: "Lady Gaga",
+                album: "The Fame Monster",
+                releaseYear: 2009}},
+        {songId: 15,
+        title: "Lose Control",
+        details: {artist: "Missy Elliot",
+                album: "The Cookbook",
+                releaseYear: 2005}},
+        {songId: 16,
+        title: "U Can't Touch This",
+        details: {artist: "MC Hammer",
+                album: "Please Hammer, Don't Hurt 'Em",
+                releaseYear: 1990}},
+        {songId: 17,
+        title: "Thriller",
+        details: {artist: "Michael Jackson",
+                album: "Thriller",
+                releaseYear: 1982}},
+         {songId: 18,
+        title: "Single Ladies",
+        details: {artist: "Beyonce",
+                album: "I am... Sasha Fierce",
+                releaseYear: 2008}},
+         {songId: 19,
+        title: "Rhythm Nation",
+        details: {artist: "Janet Jackson",
+                album: "Janet Jackson's Rhythm Nation 1814",
+                releaseYear: 1989}} 
+
+])
+
+db.songs.updateMany({}, { $rename: { title: "songTitle" } })
+
+
+
+
+
+
+
+db.songs.updateMany({}, {$rename: {"details.artist": "songArtist" }})

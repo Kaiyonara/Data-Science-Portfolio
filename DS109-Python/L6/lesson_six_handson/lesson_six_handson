@@ -1,0 +1,25 @@
+
+class Stadium:
+    """This class prints a description of the arena."""
+    def __init__(self, name, city_state, capacity):
+        
+        self.name = name
+        self.city_state = city_state
+        self.capacity = capacity
+        self.sport_played = sport_played
+        self.seats_available = seats_available
+        
+    def describe_stadium(self):
+        print("The", self.name, " is located in", self.city_state, " and holds", self.capacity, " fans.")
+        
+    def second_stadium_description(self):
+        print("The following sport is mainly played in this stadium: ", self.sport_played, " .")
+        
+    def third_stadium_description(self):
+        print("There are ", self.seats_available, "still available for tonight's game.")
+        
+stadium1 = Stadium("Mercedes Benz Area", "Atlanta, GA", "70,000", "Football", "15,000")
+
+stadium1.describe_stadium()
+stadium1.second_stadium_description()
+stadium1.third_stadium_description()

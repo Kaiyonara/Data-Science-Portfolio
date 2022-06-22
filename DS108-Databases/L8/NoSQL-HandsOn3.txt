@@ -1,0 +1,39 @@
+NoSQL-HandsOn3
+Kai Bartlette
+
+Hi Emily,
+I am working in a different setup at my boyfriend's home and couldn't
+figure out for the life of me how to take a screenshot because he's
+got a two screen setup that I didn't want to disturb. So I'm 
+copying and pasting the code I wrote and I apologize for no screen-
+shots.
+
+
+db.inventory.updateOne({item: "journal"}, {$set: {"size.h": 16}})
+
+db.inventory.updateMany({"status" : "D"}, {$set : {"qty" : 50}} )
+
+db.inventory.updateOne({item: "paper"}, {$set : {rating  :  "4 stars"}}, {upsert : true})
+db.inventory.updateOne({item: "paper"}, {$set : {"status" : "A"}})
+
+db.inventory.updateMany({}, {$rename: {"size.h": "size.height", "size.w": "size.width"}})
+
+db.inventory.updateOne({item: "spiral notebook"}, {$inc: {"size.height": 2, "size.width": 2}})
+
+db.inventory.updateOne({item: "paper"}, {$mul: {"size.height": 3}})
+
+db.inventory.updateOne({item: "day planner"}, {$mul: {"size.height": 3}})
+
+Part 2
+
+db.inventory.updateMany({}, {$set: {rating: {numberOfStars: 4, hasBeenRated: true}}}, {upsert: true})
+
+db.inventory.updateMany({}, {$mul: {quantity: 2}})
+
+db.inventory.updateMany({"size.uom": "cm"}, {$set: {status : "B"}}, {upsert: true})
+
+
+
+
+
+

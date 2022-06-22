@@ -1,0 +1,38 @@
+New Hampshire Average Annual Temperatures 
+
+There is a great deal of discussion around average daily temperatures and subsequently,
+average annual temperatures, when we consider the effects of global warming.
+
+For this test, we simply want to know whether or not the first 25 years is
+statistically significantly different from the last 25 years in the total of 59 years of 
+total average daily temperatures.
+
+This should be a dependent t-test.
+
+The hypotheses are:
+The difference between the first 25 years and the last 25 years is 0.
+The difference between the first 25 years and the last 25 years is not equal to 0.
+
+From our results:
+
+	Paired t-test
+
+data:  nhtemp[first25] and nhtemp[last25]
+t = 2.094, df = 24, p-value = 0.047
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.005401357 0.746598643
+sample estimates:
+mean of the differences 
+                  0.376 
+
+The third line verifies that the alternative hypothesis is that the difference in the 
+population means is not equal to zero, or equivalently that the two population means 
+are not equal to each other. The p-value is notoriously close to .05, however, it is
+smaller than .05, so we reject the null hypothesis.
+
+Edited to include Emily's comments:
+Layman's terms. Ex. "There was a significance between the temps from the first 25 years
+compared to the last 25 years."
+
+
